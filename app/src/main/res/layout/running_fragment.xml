@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.dkgoody.dtimer.DTimerViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.fragment.RunningFragment">
+
+        <TextView
+            android:id="@+id/timer0"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/instruction_field"
+            android:hint="set timer"
+            android:textColor="@color/colorTimer0"
+            android:theme="@style/AppTheme.InstructionText"
+            app:layout_constraintBottom_toBottomOf="@+id/divider_top"
+            app:layout_constraintEnd_toStartOf="@+id/timer1"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <TextView
+            android:id="@+id/timer1"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/instruction_field"
+            android:hint="set timer"
+            android:textColor="@color/colorTimer1"
+            android:theme="@style/AppTheme.InstructionText"
+            app:layout_constraintBottom_toBottomOf="@+id/divider_top"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/timer0"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/divider_top"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="64dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteX="1dp" />
+
+        <TextView
+            android:id="@+id/countdown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{viewModel.countDownString}"
+            android:textColor="?attr/colorPrimary"
+            android:textSize="@dimen/countdown"
+            app:layout_constraintBottom_toTopOf="@+id/divider_bottom"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/circular_shape"
+            android:indeterminate="false"
+            android:max="1000"
+            android:progress="@{viewModel.progress}"
+            android:progressDrawable="@drawable/circular_progressbar"
+            app:layout_constraintBottom_toTopOf="@+id/divider_bottom"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:textColor="?attr/colorAccent"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/countdown" />
+
+        <TextView
+            android:id="@+id/startButton"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/instruction_field"
+            android:text="@string/restart"
+            android:theme="@style/AppTheme.InstructionText"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/pauseButton"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/pauseButton"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/instruction_field"
+            android:text="@string/pause"
+            android:theme="@style/AppTheme.InstructionText"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/resumeButton"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/startButton" />
+
+        <TextView
+            android:id="@+id/resumeButton"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/instruction_field"
+            android:text="@string/resume"
+            android:theme="@style/AppTheme.AttentionText"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/cancelButton"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/pauseButton" />
+
+        <TextView
+            android:id="@+id/cancelButton"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/instruction_field"
+            android:text="@string/cancel"
+            android:theme="@style/AppTheme.InstructionText"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/skipButton"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/resumeButton" />
+
+        <TextView
+            android:id="@+id/skipButton"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/instruction_field"
+            android:text="@string/next"
+            android:theme="@style/AppTheme.InstructionText"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/cancelButton" />
+
+        <View
+            android:id="@+id/divider_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="64dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:layout_editor_absoluteX="1dp" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
+

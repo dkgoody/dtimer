@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">DTimer</string>
+    <string name="next">Next \u003e</string>
+    <string name="start">Start</string>
+    <string name="restart">\u003c Restart</string>
+    <string name="cancel">End</string>
+    <string name="pause">Pause</string>
+    <string name="resume">Resume</string>
+    <string name="ready">Ready</string>
+    <string name="background_channel_id">Background</string>
+    <string name="attention_channel_id">Attention</string>
+    <string name="background_channel_desc">Running Task Info</string>
+    <string name="attention_channel_desc">Complete Task Alert</string>
+    <string name="back_arrow">\u003c</string>
+    <string name="forward_arrow">\u003e</string>
+    <string name="timer0_i">timer0</string>
+    <string name="timer1_i">timer1</string>
+    <string name="timer0_t">timer0_t</string>
+    <string name="timer1_t">timer1_t</string>
+    <string name="cycle">cycle</string>
+    <string name="wakeUp">wakeUp</string>
+    <string name="shared_prefs">com.dkgoody.dtimer</string>
+    <string name="done">Done</string>
+    <string name="go">Go</string>
+    <string name="cycle_1_title">Work</string>
+    <string name="cycle_0_title">Break</string>
+    <string name="is_over">is over</string>
+    <string name="in_progress">is in progress</string>
+    <string name="dialog_next">Next</string>
+    <string name="dialog_stop">Stop</string>
+    <string name="action_id">ID</string>
+    <string name="is_paused">is paused</string>
+</resources>

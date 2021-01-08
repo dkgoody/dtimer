@@ -1,0 +1,35 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:textSize">36dp</item>
+    </style>
+    <style name="AppTheme.Timer0" parent="AppTheme" >
+        <item name="colorPrimary">@color/colorTimer0</item>
+        <item name="android:textColor">@color/colorTimer0</item>
+        <item name="android:textColorPrimary">@color/colorTimer0</item>
+        <item name="colorPrimaryDark">@color/colorCommon</item>
+        <item name="colorAccent">@color/colorTimer1</item>
+        <item name="colorControlNormal">@color/colorTimer0</item>
+    </style>
+    <style name="AppTheme.Timer1" parent="AppTheme" >
+        <item name="colorPrimary">@color/colorTimer1</item>
+        <item name="android:textColor">@color/colorTimer1</item>
+        <item name="android:textColorPrimary">@color/colorTimer1</item>
+        <item name="colorPrimaryDark">@color/colorCommon</item>
+        <item name="colorAccent">@color/colorTimer0</item>
+        <item name="colorControlNormal">@color/colorTimer1</item>
+    </style>
+    <style name="AppTheme.InstructionText" parent="AppTheme">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@color/colorCommon</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_height">64dp</item>
+    </style>
+    <style name="AppTheme.AttentionText" parent="AppTheme">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_height">64dp</item>
+    </style>
+</resources>

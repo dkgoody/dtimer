@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/navigation"
+    app:startDestination="@id/DTimerSettingFragment0">
+    <fragment
+        android:id="@+id/DTimerSettingFragment0"
+        android:name="com.dkgoody.dtimer.ui.fragment.DTimerSettingFragment0"
+        android:label="DTimerSettingFragment0" >
+        <action
+            android:id="@+id/setup_next"
+            app:destination="@id/DTimerSettingFragment1"
+            app:popUpTo="@+id/DTimerSettingFragment0"
+            app:popUpToInclusive="false"/>
+        <action
+            android:id="@+id/run_this"
+            app:destination="@id/DTimerRunningFragment0"
+            app:popUpTo="@+id/DTimerSettingFragment0"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/run_next"
+            app:destination="@id/DTimerRunningFragment1" />
+    </fragment>
+    <fragment
+        android:id="@+id/DTimerSettingFragment1"
+        android:name="com.dkgoody.dtimer.ui.fragment.DTimerSettingFragment1"
+        android:label="DTimerSettingFragment1" >
+        <action
+            android:id="@+id/run_this"
+            app:destination="@id/DTimerRunningFragment1"
+            app:popUpTo="@+id/DTimerSettingFragment0"
+            app:popUpToInclusive="false"/>
+        <action
+            android:id="@+id/setup_next"
+            app:destination="@id/DTimerSettingFragment0"
+            app:popUpTo="@+id/DTimerSettingFragment0"
+            app:popUpToInclusive="true"/>
+    </fragment>
+    <fragment
+        android:id="@+id/DTimerRunningFragment0"
+        android:name="com.dkgoody.dtimer.ui.fragment.DTimerRunningFragment0"
+        android:label="DTimerRunningFragment0" >
+        <action
+            android:id="@+id/setup_next"
+            app:destination="@id/DTimerSettingFragment1"
+            app:popUpTo="@+id/DTimerSettingFragment0"
+            app:popUpToInclusive="false">
+        </action>
+        <action
+            android:id="@+id/run_next"
+            app:destination="@id/DTimerRunningFragment1"
+            app:popUpTo="@+id/DTimerSettingFragment0"
+            app:popUpToInclusive="false"/>
+        <action
+            android:id="@+id/setup_this"
+            app:destination="@id/DTimerSettingFragment0" />
+        <argument
+            android:name="attention"
+            app:argType="boolean"
+            android:defaultValue="false" />
+        <action
+            android:id="@+id/setup_0"
+            app:destination="@id/DTimerSettingFragment0" />
+        <action
+            android:id="@+id/setup_1"
+            app:destination="@id/DTimerSettingFragment1" />
+    </fragment>
+    <fragment
+        android:id="@+id/DTimerRunningFragment1"
+        android:name="com.dkgoody.dtimer.ui.fragment.DTimerRunningFragment1"
+        android:label="DTimerRunningFragment1" >
+        <action
+            android:id="@+id/setup_next"
+            app:destination="@id/DTimerSettingFragment0"
+            app:popUpTo="@+id/DTimerSettingFragment0"
+            app:popUpToInclusive="true">
+        </action>
+        <action
+            android:id="@+id/run_next"
+            app:destination="@id/DTimerRunningFragment0"
+            app:popUpTo="@+id/DTimerSettingFragment0"
+            app:popUpToInclusive="false"/>
+        <action
+            android:id="@+id/setup_this"
+            app:destination="@id/DTimerSettingFragment1"
+            app:popUpTo="@+id/DTimerSettingFragment0"
+            app:popUpToInclusive="false"/>
+        <argument
+            android:name="attention"
+            app:argType="boolean"
+            android:defaultValue="false" />
+        <action
+            android:id="@+id/setup_0"
+            app:destination="@id/DTimerSettingFragment0" />
+        <action
+            android:id="@+id/setup_1"
+            app:destination="@id/DTimerSettingFragment1" />
+    </fragment>
+</navigation>
