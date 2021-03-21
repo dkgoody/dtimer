@@ -4,8 +4,10 @@ import android.app.*
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.speech.tts.TextToSpeech
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationCompat.VISIBILITY_PUBLIC
 import androidx.core.app.NotificationManagerCompat
 import androidx.navigation.NavDeepLinkBuilder
 
@@ -31,6 +33,8 @@ class DTimerNotifications {
 
     companion object {
 
+        lateinit var attention : DTimerAttention
+
         fun createNotificationChannels(context: Context) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 val AttentionChannel = NotificationChannel(
@@ -48,6 +52,9 @@ class DTimerNotifications {
                 notificationManager.createNotificationChannel(AttentionChannel)
                 notificationManager.createNotificationChannel(BackgroundChannel)
             }
+
+            if (! ::attention.isInitialized)
+                attention = DTimerAttention(context)
         }
 
 
@@ -90,14 +97,37 @@ class DTimerNotifications {
                 .setAutoCancel(true)
                 .build()
         }
-        
+
         fun sendRunningNotification(context: Context, cycle : Int, millis : Long, text : String) {
             with(NotificationManagerCompat.from(context)) {
                 notify(RequestCode.OneAndOnly,  getRunningNotification(context, cycle, text, millis)!!)
             }
         }
 
-        fun sendDoneNotification(context: Context, cycle: Int, title : String) {
+        fun alert(text : String, voice : Boolean, alarm: Boolean) {
+
+            if (::attention.isInitialized) {
+                attention.alert(text, voice, alarm)
+            }
+        }
+
+        fun cancel() {
+            if (::attention.isInitialized)
+                attention.cancel()
+        }
+
+        fun cancel(context: Context) {
+
+            cancel()
+            with(NotificationManagerCompat.from(context)) {
+                cancel(RequestCode.OneAndOnly)
+            }
+        }
+
+
+        fun sendDoneNotification(context: Context, cycle: Int, title : String, ring : Boolean) {
+
+
             val action_start: NotificationCompat.Action = NotificationCompat.Action.Builder(
                 R.drawable.ic_notify_foreground,
                 context.getString(R.string.dialog_next),
@@ -122,19 +152,22 @@ class DTimerNotifications {
                 )
             ).build()
 
+
+
             val notification = NotificationCompat.Builder(context,
                 context.getString(R.string.attention_channel_id))
                 .setSmallIcon(R.drawable.ic_notify_foreground)
                 .setContentTitle(title)
                 .setContentText(context.getString(R.string.is_over))
                 .setColor(context.getColor(getCycleColor(cycle)))
-                .setContentIntent(getRunningIntent(context, cycle))
-                .setAutoCancel(true)
-                .addAction(action_start)
+                 .setContentIntent(getRunningIntent(context, cycle))
+                 .setAutoCancel(true)
                 .addAction(action_stop)
+                .addAction(action_start)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setDefaults(Notification.DEFAULT_SOUND)
+                .setVisibility(VISIBILITY_PUBLIC)
                 .build()
+
 
             with(NotificationManagerCompat.from(context)) {
                 notify(RequestCode.OneAndOnly, notification)

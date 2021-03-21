@@ -18,16 +18,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import com.dkgoody.dtimer.DTimerState
-import com.dkgoody.dtimer.DTimerViewModel
-import com.dkgoody.dtimer.R
+import com.dkgoody.dtimer.*
 import com.dkgoody.dtimer.databinding.RunningFragmentBinding
 
 open class DTimerRunningFragment(cycle : Int, theme : Int) : Fragment() {
 
     private val cycle = cycle
     private val theme = theme
-    private val ringtone : Ringtone  by lazy { RingtoneManager.getRingtone(context, RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM))}
     private lateinit var binding  : RunningFragmentBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -59,12 +56,12 @@ open class DTimerRunningFragment(cycle : Int, theme : Int) : Fragment() {
         }
 
         binding.startButton.setOnClickListener {
-            silence()
+            DTimerNotifications.cancel()
             viewModel.startTimer(cycle)
         }
 
         binding.pauseButton.setOnClickListener {
-            silence()
+            DTimerNotifications.cancel()
             viewModel.pauseTimer()
         }
 
@@ -88,13 +85,13 @@ open class DTimerRunningFragment(cycle : Int, theme : Int) : Fragment() {
                     viewModel.pauseTimer()
                 }
                 DTimerState.PAUSED -> {
-                    viewModel.startTimer(cycle)
+                    viewModel.resumeTimer()
                 }
                 DTimerState.IDLE -> {
                     viewModel.startTimer(cycle)
                 }
                 DTimerState.DONE -> {
-                    silence()
+                    DTimerNotifications.cancel()
                 }
             }
         }
@@ -120,7 +117,7 @@ open class DTimerRunningFragment(cycle : Int, theme : Int) : Fragment() {
 
     override fun onPause() {
         super.onPause()
-        silence()
+        DTimerNotifications.cancel()
     }
 
     override fun onResume() {
@@ -145,35 +142,36 @@ open class DTimerRunningFragment(cycle : Int, theme : Int) : Fragment() {
                     binding.pauseButton.visibility = View.VISIBLE
                     binding.resumeButton.visibility = View.GONE
                     binding.cancelButton.visibility = View.GONE
-                    silence()
+                    DTimerNotifications.cancel()
                 }
                 DTimerState.PAUSED -> {
                     // <Restart Resume Next>
                     binding.pauseButton.visibility = View.GONE
                     binding.resumeButton.visibility = View.VISIBLE
                     binding.cancelButton.visibility = View.GONE
-                    silence()
+                    DTimerNotifications.cancel()
                 }
                 DTimerState.DONE -> {
                     // <Restart End Next>
                     binding.pauseButton.visibility = View.GONE
                     binding.resumeButton.visibility = View.GONE
                     binding.cancelButton.visibility = View.VISIBLE
-                    attention()
+
+                    if (false == binding.viewModel!!.getAutoStart(cycle)) {
+                        binding.viewModel!!.alert_over()
+                    }
+                    else {
+                        binding.viewModel!!.alert_next()
+                        binding.viewModel!!.stopTimer()
+                        findNavController().navigate(R.id.run_next)
+                    }
                 }
                 else -> {
-                    silence()
+                    DTimerNotifications.cancel()
                 }
             }
     }
 
-    private fun attention() {
-        ringtone.play()
-    }
-
-    private fun silence() {
-            ringtone.stop()
-    }
 
     private fun buzz(pattern: LongArray) {
         val vibrator =

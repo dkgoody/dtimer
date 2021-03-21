@@ -82,6 +82,7 @@ open class DTimerSettingFragment(cycle : Int, theme : Int) : Fragment() {
         binding.minPicker.value = binding.viewModel?.getTimerMin(cycle) as Int
         binding.secPicker.value = binding.viewModel?.getTimerSec(cycle) as Int
         binding.cycleTitle.setText(binding.viewModel?.getTimerTitle(cycle) as String)
+
     }
 
     private fun updateViewModel() {
@@ -91,6 +92,6 @@ open class DTimerSettingFragment(cycle : Int, theme : Int) : Fragment() {
             when (binding.cycleTitle.text.isBlank()) {
                 true -> binding.cycleTitle.hint.toString()
                 else -> binding.cycleTitle.text.toString()
-            })
+            }, false)
     }
 }

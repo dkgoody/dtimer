@@ -33,6 +33,7 @@ class DTimerViewModel(application: Application, private val savedStateHandle: Sa
 
     private val _timeleft = MutableLiveData<Long>() // Milliseconds
     private var _initialtime = 0L
+    private var _background = MutableLiveData<Boolean>()
 
     private lateinit var _countDownTimer : CountDownTimer
 
@@ -47,6 +48,8 @@ class DTimerViewModel(application: Application, private val savedStateHandle: Sa
         return DateUtils.formatElapsedTime(_persistentState.next_timer_value(cycle).toLong())
     }
 
+    fun nextTimerTitle(cycle : Int) : String = _persistentState.next_timer_title(cycle)
+
     val progress = Transformations.map(_timeleft) { time ->
         when(_initialtime) {
             0L -> 0
@@ -54,15 +57,44 @@ class DTimerViewModel(application: Application, private val savedStateHandle: Sa
         }
     }
 
+    fun autostart() = _persistentState.autostart()
+    fun voicealert() = _persistentState.voicealert()
+    fun alarm() = _persistentState.alarm()
+
+    fun set_autostart(f : Boolean) {
+        _persistentState.set_autostart(f)
+    }
+
+    fun set_voicealert(f : Boolean) {
+        _persistentState.set_voicealert(f)
+    }
+
+    fun set_alarm(f : Boolean) {
+        _persistentState.set_alarm(f)
+    }
+
+    fun alert_over() {
+        DTimerNotifications.alert(_persistentState.timer_title(_persistentState.cycle()) +
+                _context.getString(R.string.complete_message), _persistentState.voicealert(), _persistentState.alarm())
+    }
+
+    fun alert_next() {
+
+        val c = _persistentState.cycle()
+        DTimerNotifications.alert(_persistentState.timer_title(c) + _context.getString(R.string.autostart_message) +
+            _persistentState.next_timer_title(c), _persistentState.voicealert(), _persistentState.alarm())
+    }
 
     init {
         _timeleft.value = 0L
         buzzEvent.value = DTimerEvent(BuzzType.NO_BUZZ)
         timerStateChangeEvent.value = DTimerEvent(DTimerState.IDLE)
+
+        DTimerNotifications.createNotificationChannels(_context)
     }
 
     // For use in DTimerSettingFragment
-    fun updateSettings(cycle : Int, minutes : Int, seconds : Int, title : String) {
+    fun updateSettings(cycle : Int, minutes : Int, seconds : Int, title : String, autostart : Boolean) {
         _persistentState.set(cycle, minutes, seconds, title, DTimerState.IDLE.ordinal)
     }
 
@@ -71,6 +103,8 @@ class DTimerViewModel(application: Application, private val savedStateHandle: Sa
     private fun _getTimer(cycle : Int)  = _persistentState.timer_value(cycle)
 
     fun getTimerTitle(cycle : Int)  = _persistentState.timer_title(cycle)
+
+    fun getAutoStart(cycle : Int) : Boolean = _persistentState.autostart()
 
     fun timerStatePeek() = timerStateChangeEvent.value!!.peek()
 
@@ -93,7 +127,11 @@ class DTimerViewModel(application: Application, private val savedStateHandle: Sa
 
 
     fun startTimer(cycle : Int) : Boolean {
+
+        _persistentState.set_cycle(cycle)
         _initialtime = _persistentState.timer_value_ms(cycle)
+
+        Log.i("DTimer", "Start cycle=" + cycle + " initial=" + _initialtime)
         _timeleft.value = _initialtime
         return resumeTimer()
     }
@@ -113,7 +151,9 @@ class DTimerViewModel(application: Application, private val savedStateHandle: Sa
 
             var ticksBetweenBuzz = 0L;
             override fun onTick(millisUntilFinished: Long) {
-                _timeleft.value = millisUntilFinished
+                if (millisUntilFinished >= 0)
+                    _timeleft.value = millisUntilFinished
+
                 if (millisUntilFinished < SECOND_TO_MS) {
                     _timeleft.value = 0L
                 }
@@ -131,13 +171,13 @@ class DTimerViewModel(application: Application, private val savedStateHandle: Sa
         }
         timerStateChangeEvent.value = DTimerEvent(DTimerState.RUNNING)
         _countDownTimer.start()
-        Log.i("DTimer", "starting timer")
+        Log.i("DTimer", "starting timer initial=" + _initialtime)
         return true
     }
 
 
     fun putToBackground(context: Context) {
-
+        _background.value = true
         val left = _timeleft.value!!
 
         _persistentState.save(
@@ -166,23 +206,39 @@ class DTimerViewModel(application: Application, private val savedStateHandle: Sa
     fun putToForeground(context: Context)
     {
         DTimerService.cancel(_context)
+        _persistentState.sync()
 
+        if (false == _background.value) {
+            Log.i("DTimer", "Not in the background")
+            return
+        }
+        _background.value = false
         _initialtime = _persistentState.timer_value_ms(_persistentState.cycle())
+
+        Log.i("DTimer", "Put to foreground cycle=" + _persistentState.cycle() + " initial=" + _initialtime)
         timerStateChangeEvent.value = DTimerEvent(DTimerState.valueOf(_persistentState.state())!!)
 
         when (timerStatePeek()) {
             DTimerState.RUNNING -> {
-                if (_persistentState.wakeup() > System.currentTimeMillis()) {
-                    _timeleft.value = _persistentState.wakeup() - System.currentTimeMillis()
+                val timeleft  = _persistentState.wakeup() - System.currentTimeMillis()
+                if (timeleft > 0L) {
+                    Log.i("DTimer", "put to Foreground left=" +  timeleft)
+                    _timeleft.value  = timeleft
                     resumeTimer()
+                }
+                else {
+                    _timeleft.value = 0L
                 }
             }
             DTimerState.PAUSED -> {
                 _timeleft.value = _persistentState.freeze()
+                Log.i("DTimer", "Freeze left=" + _timeleft.value)
             }
             else -> {
                 _timeleft.value = 0
             }
         }
+
+        Log.i("DTimer", "So What?")
     }
 }

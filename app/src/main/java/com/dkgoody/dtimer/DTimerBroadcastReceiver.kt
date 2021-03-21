@@ -15,7 +15,6 @@ class DTimerBroadcastReceiver: BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
 
-
         val notificationManager =
             context.getSystemService(AppCompatActivity.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.cancelAll()

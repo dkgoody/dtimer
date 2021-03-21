@@ -64,13 +64,15 @@
 
         <EditText
             android:id="@+id/cycleTitle"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
             android:ems="10"
             android:hint="Break"
             android:inputType="textPersonName"
             android:textAlignment="center"
             android:textColor="?attr/colorPrimary"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -94,8 +96,9 @@
             android:id="@+id/backSign"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
+            android:layout_marginStart="64dp"
             android:text="@string/back_arrow"
+            android:textSize="64sp"
             android:textColor="?attr/colorAccent"
             app:layout_constraintBottom_toTopOf="@+id/divider_bottom"
             app:layout_constraintStart_toStartOf="parent"
@@ -105,8 +108,9 @@
             android:id="@+id/forwardSign"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="32dp"
+            android:layout_marginEnd="64dp"
             android:text="@string/forward_arrow"
+            android:textSize="64sp"
             android:textColor="?attr/colorAccent"
             app:layout_constraintBottom_toTopOf="@+id/divider_bottom"
             app:layout_constraintEnd_toEndOf="parent"

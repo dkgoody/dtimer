@@ -30,4 +30,6 @@
     <string name="dialog_stop">Stop</string>
     <string name="action_id">ID</string>
     <string name="is_paused">is paused</string>
+    <string name="autostart_message">\" is over,     time for\"</string>
+    <string name="complete_message">\" is over\"</string>
 </resources>
