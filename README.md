@@ -1,5 +1,3 @@
 # dtimer
 
-@startuml
-Time1-> Timer2 : wakeup
-@enduml
+![Diagram](http://www.plantuml.com/plantuml/proxy?cache=no&src=diagram.puml)
