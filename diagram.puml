@@ -1,0 +1,3 @@
+@startuml
+Timer1 -> Timer2 : wakeup
+@enduml
